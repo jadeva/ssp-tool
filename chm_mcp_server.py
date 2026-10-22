@@ -253,6 +253,12 @@ def _get_searcher(chm: str = 'spro') -> CHMSearch:
                 instance.build_index()
                 instance.remove_old_caches()
             _searchers[chm] = instance
+        elif _searchers[chm].stale:
+            # Another chm-docs process may have finished re-indexing first and
+            # deleted the old cache, so switch to its index
+            current = CHMSearch(str(_searchers[chm].chm_path), allow_stale=True)
+            if not current.stale:
+                _searchers[chm] = current
         used = _used_chms.get()
         if used is not None:
             used.add(chm)

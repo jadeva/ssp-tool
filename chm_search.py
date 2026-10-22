@@ -559,8 +559,8 @@ class CHMSearch:
     def rebuild(self):
         """Extract the CHM file again and rebuild the index from scratch."""
         if self.extract_dir.exists():
-            # Move the old cache aside first. If a file in it is in use, the rename
-            # fails and the cache is left intact.
+            # Move the old cache aside first. On Windows, if a file in it is in use,
+            # the rename fails and the cache is left intact.
             old_dir = self.extract_dir.with_name(f"{self.extract_dir.name}.tmp-old-{os.getpid()}")
             self.extract_dir.rename(old_dir)
             shutil.rmtree(old_dir, ignore_errors=True)
